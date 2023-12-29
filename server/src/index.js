@@ -14,10 +14,12 @@ app.use(morgan("dev"))
 app.use(express.json());
 
 //turnos disposibles
-app.get("/api/turnos",async(req,res)=>{
+app.get("/api/turnos/:medico",async(req,res)=>{
+    const medico = req.params.medico
     const connection = await database.getConnection();
     try {
-        const result = await connection.query("SELECT * FROM abaduna WHERE estado = 0");//cambiar a estado cero
+        //sensible a inyercion de sql
+        const result = await connection.query(`SELECT * FROM ${medico} WHERE estado = 0;`);//cambiar a estado cero
         res.status(200).json(result);
     } catch (error) {
         console.error("Error en la consulta:", error);
@@ -52,6 +54,20 @@ app.post("/api/turnosagregados",async(req,res)=>{
         res.status(500).json({ error: "Error en el put" });
     }
 })
+
+//get de tabla de medicos
+app.get("/api/medicos",async(req,res)=>{
+    const connection = await database.getConnection();
+    try {
+        const result = await connection.query("SELECT * FROM tabledemeidcos");
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("Error en la consulta:", error);
+        await connection.end();
+        res.status(500).json({ error: "Error en la consulta" });
+    }
+})
+
 app.listen(3001,()=>{
     console.log(`corriendo por el puerto 3000`);
 })
