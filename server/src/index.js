@@ -27,11 +27,12 @@ app.get("/api/turnos",async(req,res)=>{
 })
 
 //reservar turno
-app.post("/api/reservaturno",async(req,res)=>{
+app.post("/api/reservaturno/:id",async(req,res)=>{
+    const id = req.params.id
     const connection = await database.getConnection();
     let {nombre,hora} = req.body
     try {
-        const result = await connection.query("INSERT INTO `abaduna` (`nombre`, `hora`, `estado`) VALUES (?, ?, ?);",[nombre,hora,1])
+        const result = await connection.query(`UPDATE abaduna SET nombre = ?, estado = 1 WHERE id=?;`,[nombre,id])
         res.status(200).json({ message: "reservado con exito" });
     } catch (error) {
         console.error("Error en la consulta:", error);

@@ -10,13 +10,9 @@ const TurnosDisponiblesComponent = ({turno,updateData}) => {
   const CallAPI = async () => {
     console.log(id);
     try {
-      let datos = {
-        hora,
-        nombre:"generico2",
-        estado:1
-      };
+      let datos = {nombre:"desde el front"};
 
-      await API.post(`/api/turnos`,datos);
+      await API.post(`/api/reservaturno/${id}`,datos);
       console.log(`turno asignado con exito`);
       updateData()
     } catch (error) {

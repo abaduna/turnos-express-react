@@ -10,7 +10,7 @@ function Turnos() {
   console.log(data);
 
   const updateData = () => {
-    console.log(updateData);
+    console.log(`updateData`);
     setEndpoint("api/turnos")
     fetchData();
   };
