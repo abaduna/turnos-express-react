@@ -77,27 +77,32 @@ app.get("/api/medicos", async (req, res) => {
 });
 
 app.post("/api/cargarmedico", async (req, res) => {
-  const connection = await database.getConnection();
-  let { nameMedico } = req.body;
-  const sanitizedMedicoName = nameMedico.replace(/[^a-zA-Z0-9_]/g, '_');
-  try {
-    const sentenciaSql = `CREATE TABLE ${sanitizedMedicoName} (id INT NOT NULL AUTO_INCREMENT, nombre VARCHAR(50) DEFAULT NULL,hora INT DEFAULT NULL,estado TINYINT DEFAULT 0,PRIMARY KEY ( id ));`;
-
-    await connection.query(sentenciaSql);
+    const connection = await database.getConnection();
+    let { nameMedico } = req.body;
+    const sanitizedMedicoName = nameMedico.replace(/[^a-zA-Z0-9_]/g, '_');
+    
     try {
-      await connection.query(`INSERT INTO tabledemeidcos (medico) VALUES (?);`,[sanitizedMedicoName])
+      const sentenciaSql = `CREATE TABLE ${sanitizedMedicoName} (id INT NOT NULL AUTO_INCREMENT, nombre VARCHAR(50) DEFAULT NULL,hora INT DEFAULT NULL,estado TINYINT DEFAULT 0,PRIMARY KEY ( id ));`;
+  
+      await connection.query(sentenciaSql);
+      cargarEnlatablademedicos()
+      
     } catch (error) {
-      console.log(`error en la setencia de insert`);
-      console.error(error);
+      console.error("Error en la consulta:", error);
+      res.status(500).json({ error: "Error en el put" });
     }
+  });
 
-    res.status(200).json({ message: " medico agregando" });
-  } catch (error) {
-    console.error("Error en la consulta:", error);
-    await connection.end();
-    res.status(500).json({ error: "Error en el put" });
-  }
-});
+const cargarEnlatablademedicos=async()=>{
+    try {
+        await connection.query(`INSERT INTO tabledemeidcos (medico) VALUES (?);`, [sanitizedMedicoName]);
+        res.status(200).json({ message: "medico agregando" });
+      } catch (error) {
+        console.log(`error en la sentencia de insert`);
+        console.error(error);
+        res.status(500).json({ error: "Error en el put" });
+      }
+}
 
 app.listen(3001, () => {
   console.log(`corriendo por el puerto 3000`);

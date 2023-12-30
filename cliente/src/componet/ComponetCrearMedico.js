@@ -2,11 +2,22 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-
+import { API } from "../API";
 function ComponetCrearMedico() {
   const [medico, setMedico] = useState("");
-  const uploadDoctor =()=>{
+  const uploadDoctor =async()=>{
+    let datos = {
+        "nameMedico":"probandonumero3"
+        
+        }
+    try {
+        await API.post(`api/cargarmedico`, datos);
+      } catch (error) {
+        console.error("Error al realizar la solicitud:", error);
+        console.error("Error de red:", error.message);
+      }
     
+      
   }
   return (
     <>
