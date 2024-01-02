@@ -3,6 +3,8 @@ import Form from "react-bootstrap/Form";
 import { API } from "../API";
 import { useFetch } from "../hoocks/useFetch";
 import { Button } from "react-bootstrap";
+import { medicoContex } from "../contex/medico";
+import { useContext } from "react";
 ///api/medicos
 const ComponetSelctmeido = ({ getDoctor }) => {
   const [medicoSeleccionado, setMedicoSeleccionado] = useState('')
@@ -10,17 +12,14 @@ const ComponetSelctmeido = ({ getDoctor }) => {
   const { state, fetchData } = useFetch(endpoint);
   const { data, loading, error } = state;
   console.log(data);
+  const { setMedico } = useContext(medicoContex);
 
-  const getDoctorComponet = (medico) => {
-    // Implementa la lógica para obtener la información del médico
-    console.log("Obteniendo información del médico: ", medico);
-    getDoctor(medico)
-  };
 
   const handleMedicoChange = (event) => {
     const nuevoMedicoSeleccionado = event.target.value;
-    setMedicoSeleccionado(nuevoMedicoSeleccionado);
-    getDoctorComponet(nuevoMedicoSeleccionado);
+    
+     setMedico(nuevoMedicoSeleccionado)
+     console.log(nuevoMedicoSeleccionado);
   };
   return (
     <>
@@ -38,6 +37,7 @@ const ComponetSelctmeido = ({ getDoctor }) => {
           ))}
         {data && data.length === 0 && <option>...cargando</option>}
       </Form.Select>
+      
     </>
   );
 };

@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { API } from '../API';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
+import { medicoContex } from '../contex/medico';
 
 function AgregarTurno({updateData}) {
     const [hora,setHora] = useState(null)
+    const {medico} = useContext(medicoContex)
     //ojo solo agregar numero enteros
     const addTime = async () => {
        
@@ -14,10 +16,10 @@ function AgregarTurno({updateData}) {
             estado:0
           };
     
-          await API.post(`/api/turnosagregados`,datos);
+          await API.post(`/api/turnosagregados/${medico}`,datos);
           console.log(`nueva hora`);
           updateData()
-          setHora()
+          setHora(null)
         } catch (error) {
           console.log(`algo salio en en CallAPI de TurnosDisponiblesComponent`);
           console.error(error);

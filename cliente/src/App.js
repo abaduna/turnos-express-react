@@ -1,10 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
-import Turnos from './pages/Turnos';
+import logo from "./logo.svg";
+import "./App.css";
+import Turnos from "./pages/Turnos";
+import { MedicoProvider } from "./contex/medico";
 function App() {
   return (
     <div className="App">
-     <Turnos></Turnos>
+      <MedicoProvider>
+        <Turnos></Turnos>
+      </MedicoProvider>
     </div>
   );
 }

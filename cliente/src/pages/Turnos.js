@@ -1,36 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import { Row, Container } from 'react-bootstrap';
+import React, { useState, useEffect, useContext } from 'react';
+import { Row, Container, Button } from 'react-bootstrap';
 import TurnosDisponiblesComponent from "./../componet/TurnosDisponiblesComponent"
 import { useFetch } from '../hoocks/useFetch';
 import AgregarTurno from '../componet/AgregarTurno';
 import ComponetSelctmeido from '../componet/ComponetSelctmeido';
 import ComponetCrearMedico from "../componet/ComponetCrearMedico"
+import { medicoContex } from '../contex/medico';
 function Turnos() {
-  const [endpoint, setEndpoint] = useState('/api/turnos/abaduna');
-  const [medico,setMedico]= useState("")
+  // const {medico} = useContext(medicoContex)
+  const {medico,setMedico} = useContext(medicoContex)
+  
+  
+  const [endpoint, setEndpoint] = useState(`/api/turnos/abaduna`);
   const { state, fetchData } = useFetch(endpoint);
+  // console.log(endpoint);
   const { data, loading, error } = state
-  console.log(data);
+ 
 
   const updateData = () => {
     console.log(`updateData`);
+    fetchData()
     
-    fetchData();
   };
-  const getDoctor=(medico)=>{
-    console.log(medico);
-    console.log(`del componet padre`);
-    setEndpoint(`/api/turnos/${medico}`)
+  const serchMedic=async()=>{
+      console.log(`click serchMedic`);
+      await setEndpoint(`/api/turnos/${medico}`)
+      console.log(endpoint);
+      await fetchData();
+      console.log(data); // Log the updated data after the fetch is completed
+      console.log(`useEffect`);
+    
   }
+ 
+  
+    
+
+
   if (loading) return <h1>Loading...</h1>;
   if (error) return <h1>Error...</h1>;
 
   return (
     <>
-        <ComponetSelctmeido getDoctor={getDoctor}></ComponetSelctmeido>
+        <ComponetSelctmeido></ComponetSelctmeido>
         <AgregarTurno  updateData={updateData} ></AgregarTurno>
-        <h3>Elegi el turno</h3>
-        {data?.map((turno)=>(
+        <h3>Elegi el turno de <b>{medico}</b></h3>
+        <Button onClick={serchMedic}>Buscar turnos medico👆</Button>
+        {data.length >0 && data?.map((turno)=>(
           <TurnosDisponiblesComponent turno={turno} updateData={updateData}></TurnosDisponiblesComponent>
         ))}
         <ComponetCrearMedico  updateData={updateData} ></ComponetCrearMedico>
