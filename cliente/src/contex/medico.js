@@ -5,7 +5,7 @@ export const medicoContex = createContext()
 const {Provider} = medicoContex
 
 export const MedicoProvider =({children})=>{
-    const [medico,setMedico] = useState(null)
+    const [medico,setMedico] = useState("abaduna")
     console.log(`medico del contexto`);
     console.log(medico);
     return(

@@ -15,7 +15,7 @@ function Turnos() {
   const { state, fetchData } = useFetch(endpoint);
   // console.log(endpoint);
   const { data, loading, error } = state
- 
+ console.log(medico);
 
   const updateData = () => {
     console.log(`updateData`);

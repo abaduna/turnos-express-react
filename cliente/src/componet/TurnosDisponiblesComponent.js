@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Col } from "react-bootstrap";
 import { API } from "../API";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { medicoContex } from "../contex/medico";
 
 const TurnosDisponiblesComponent = ({turno,updateData}) => {
   const { hora, id ,nombre} =turno
   console.log(id);
+  //const {medico,setMedico} = useContext(medicoContex)
+  const {medico}= useContext(medicoContex)
   const CallAPI = async () => {
     console.log(id);
     try {
       let datos = {nombre:"desde el front"};
 
-      await API.post(`/api/reservaturno/${id}`,datos);
+      await API.post(`/api/reservaturno/${id}/${medico}`,datos);
       console.log(`turno asignado con exito`);
       updateData()
     } catch (error) {

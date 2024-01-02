@@ -7,7 +7,7 @@ function ComponetCrearMedico() {
   const [medico, setMedico] = useState("");
   const uploadDoctor =async()=>{
     let datos = {
-        "nameMedico":"probandonumero3"
+        "nameMedico":medico
         
         }
     try {
